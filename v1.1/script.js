@@ -1,7 +1,7 @@
 setTimeout(()=>{
     var div = document.getElementsByClassName('component-heading')[1]
     var url = window.location.href
-
+    console.log('hi')
     if(url.endsWith('/student')){
         console.log(days)
         var days = document.getElementsByClassName('days')[0]
