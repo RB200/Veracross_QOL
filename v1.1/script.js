@@ -1,11 +1,14 @@
+var notPressed = true
 setTimeout(()=>{
     var div = document.getElementsByClassName('component-heading')[1]
     var url = window.location.href
-    console.log('hi')
-    if(url.endsWith('/student')){
-        console.log(days)
-        var days = document.getElementsByClassName('days')[0]
-        days.style.display = 'none'
+    
+    addSettingsTab()
+    
+    if(url.endsWith('/student') || url.endsWith('/student/') || url.endsWith('/student#')){
+        
+        
+
         var dataDiv = document.createElement('div')
         dataDiv.setAttribute('id','data-div')
         var total = 0
@@ -55,8 +58,7 @@ setTimeout(()=>{
         div.appendChild(dataDiv)
     }
     else{
-        var days = document.getElementById('days')
-        days.style.display = 'none'
+        
         var div = document.getElementsByClassName('vx-list course-list active')[0]
         var dataDiv = document.createElement('div')
         dataDiv.setAttribute('id','data-div')
@@ -151,4 +153,64 @@ setTimeout(()=>{
 
         return letterGrade
     }
-},200)
+},250)
+
+function addSettingsTab(){
+    console.log('function ran')
+    var div = document.getElementsByClassName('component-button-link left')[0]
+    div.setAttribute('style','')
+    var header = document.getElementsByClassName('vx-nav-right')[0]
+    var extSettings =  document.createElement('a')
+    var icon = document.createElement('i')
+    extSettings.setAttribute('class','chrome-extension vx-nav-button screen-button')
+    extSettings.setAttribute('style', 'margin-left: 20%; margin-right:15%; background: rgb(6, 158, 115); color: rgb(0, 0, 0);')
+    extSettings.appendChild(icon)
+    extSettings.append('Extension Settings')
+    
+    extSettings.addEventListener('click',()=>{
+        if(notPressed){
+            showModal()
+            notPressed = false
+        }
+    })
+    //extSettings.addEventListener('mouseleave',()=>{
+    //    removeModal()
+    //})
+    div.prepend(extSettings)
+
+    
+}
+
+function showModal(){
+    
+    var extSettings = document.getElementsByClassName('chrome-extension')[0]
+    var dropdownContent = document.createElement('div')
+    var bg = document.querySelector('body')
+    dropdownContent.setAttribute('class','dropdown-content')
+    var text = document.createElement('h1')
+    text.innerHTML = 'Hello World!'
+
+    dropdownContent.appendChild(text)
+    dropdownContent.style.display = 'none'
+    dropdownContent.style.position = 'fixed'
+    dropdownContent.style.minWidth = '160px'
+    dropdownContent.style.background = '#fff'
+    dropdownContent.style.boxShadow = '0px 8px 16px 0px rgba(0,0,0,0.2)'
+    dropdownContent.style.padding = '12px 16px'
+    dropdownContent.style.zIndex = 10
+
+    dropdownContent.style.display = 'block'
+
+    extSettings.appendChild(dropdownContent)
+    
+    window.addEventListener('click',(e)=>{
+        if(e.target == bg){
+            dropdownContent.remove()
+            notPressed = true
+        }
+    })
+}
+
+function removeModal(){
+    var dropdownContent = document.querySelector('.dropdown-content').remove()
+}
