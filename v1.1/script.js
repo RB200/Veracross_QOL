@@ -1,9 +1,10 @@
 var notPressed = true
 setTimeout(()=>{
+    
     var div = document.getElementsByClassName('component-heading')[1]
     var url = window.location.href
     
-    addSettingsTab()
+    
     if(localStorage.getItem('header-color') !== null){
         var header = document.getElementsByClassName('vx-nav')[0]
         var color = localStorage.getItem('header-color') !== undefined ? localStorage.getItem('header-color') : '#0071bd'
@@ -11,10 +12,23 @@ setTimeout(()=>{
         var topButton = document.getElementsByClassName('vx-nav-center__portal')[0]
         var secondTopButton = document.getElementsByClassName('vx-nav-center__portals-button vx-tooltipped vx-tooltipped--s')[0]
 
+        var assignmentPlannerIcon = document.getElementsByClassName("icon-block")[1]
+        var classesAndReportsIcon = document.getElementsByClassName('icon-block')[2]
+        var myCalendarIcon = document.getElementsByClassName('icon-block')[3]
+
         topButton.style.background = color
         secondTopButton.style.background = color
-        
         header.style.background = color
+        assignmentPlannerIcon.style.color = color
+        let r = hex2rgb(color).r
+        let g = hex2rgb(color).g
+        let b = hex2rgb(color).b
+        
+        assignmentPlannerIcon.style.backgroundColor = `rgba(${r},${g},${b},0.2)`
+        classesAndReportsIcon.style.color = color
+        classesAndReportsIcon.style.backgroundColor = `rgba(${r},${g},${b},0.2)`
+        myCalendarIcon.style.color = color
+        myCalendarIcon.style.backgroundColor = `rgba(${r},${g},${b},0.2)`
 
         var leftTriangle = document.createElement('a')
         leftTriangle.setAttribute('class','chrome-extension big-button left-triangle')
@@ -37,12 +51,26 @@ setTimeout(()=>{
         secondRightTriangle.setAttribute('class','chrome-extension small-button right-triangle')
         secondRightTriangle.setAttribute('style',`border-color: transparent transparent transparent ${color};border-style: solid;border-width: 25px 0 0 7px;content: "";display: block;left: 43px;position: absolute;top: -1px;`)    
         secondTopButton.appendChild(secondRightTriangle)
+
+        var leftTriangle = document.getElementsByClassName('chrome-extension big-button left-triangle')[0]
+        var rightTriangle = document.getElementsByClassName('chrome-extension big-button right-triangle')[0]
+
+        var secondLeftTriangle = document.getElementsByClassName('chrome-extension small-button left-triangle')[0]
+        var secondRightTriangle = document.getElementsByClassName('chrome-extension small-button right-triangle')[0]
+        secondLeftTriangle.style.left = "-10px"
+        secondLeftTriangle.style.position = "absolute"
+        secondLeftTriangle.style.top = '0px'
+        secondLeftTriangle.style.borderWidth = "0px 10px 27px 0px"
+        secondRightTriangle.style.left = '44px'
+        secondRightTriangle.style.position = 'absolute'
+        secondRightTriangle.style.top = '-2px'
+        secondRightTriangle.style.borderWidth = "28px 0px 0px 10px"
         
     }
+    
     if(url.endsWith('/student') || url.endsWith('/student/') || url.endsWith('/student#')){
+        addSettingsTab()
         
-        
-
         var dataDiv = document.createElement('div')
         dataDiv.setAttribute('id','data-div')
         var total = 0
@@ -75,19 +103,18 @@ setTimeout(()=>{
         
 
         var letterWithoutAdvisory = getLetterGrade(final)
-        var letterWithAdvisory = getLetterGrade(finalWithAdvisory)
-        var dataTextWithAdvisory = document.createElement('h1')
-        dataTextWithAdvisory.innerHTML = `Average Grade:&ensp;${letterWithAdvisory}&emsp;&ensp;${finalWithAdvisory}% (includes advisory)`
+        
+        
         var dataTextWithoutAdvisory = document.createElement('h1')
-        dataTextWithoutAdvisory.innerHTML = `Average Grade:&ensp;${letterWithoutAdvisory}&emsp;&ensp;${final}% (excludes advisory)`
+        dataTextWithoutAdvisory.innerHTML = `Average Grade:&ensp;${letterWithoutAdvisory}&emsp;&ensp;${final}%`
         dataDiv.style.fontSize = '12px'
         dataDiv.style.textAlign = 'center'
         dataDiv.style.justifyContent = 'center'
+        dataTextWithoutAdvisory.style.paddingBottom = "20px"
         dataDiv.style.borderBottom = '1px solid #d6d6d6'
         
-        dataTextWithAdvisory.style.fontWeight = '300'
+        
         dataTextWithoutAdvisory.style.fontWeight = '300'
-        dataDiv.appendChild(dataTextWithAdvisory)
         dataDiv.appendChild(dataTextWithoutAdvisory)  
         div.appendChild(dataDiv)
     }
@@ -150,10 +177,10 @@ setTimeout(()=>{
 },300)
 function getLetterGrade(num){
     var letterGrade = ''
-    if(num >= 92.50){
+    if(num >= 93){
         letterGrade = 'A'
     }
-    else if(num >= 90.00 && num < 92.50){
+    else if(num >= 90.00 && num < 93){
         letterGrade = 'A-'
     }
     else if(num >= 87.00 && num < 90.00){
@@ -189,15 +216,31 @@ function getLetterGrade(num){
 
     return letterGrade
 }
+var topButton = document.getElementsByClassName('vx-nav-center__portal')[0]
+var secondTopButton = document.getElementsByClassName('vx-nav-center__portals-button vx-tooltipped vx-tooltipped--s')[0]
+var header = document.getElementsByClassName('vx-nav')[0]
+var dropdownContent = document.createElement('div')
+var bg = document.querySelector('body')
+dropdownContent.setAttribute('class','dropdown-content')
+var text = document.createElement('h1')
+var extSettings = document.getElementsByClassName('chrome-extension nc-icon-glyph ui-1_settings-gear-64')[0]
+var veracrossIconButton = document.getElementsByClassName('vx-nav-center__portals-button vx-tooltipped vx-tooltipped--s')[0]
+veracrossIconButton.style.position = "absolute"
+veracrossIconButton.style.left = '175px'
+veracrossIconButton.style.borderBottom = '0px'
+veracrossIconButton.style.borderTop = '0px'
 
+
+
+var div = document.getElementsByClassName('component-button-link left')[0]
+
+var extSettings =  document.createElement('a')
+var schedule = document.getElementsByClassName('screen-button')[0]
+var submitButton = document.getElementsByClassName('screen-button')[1]
+
+var extIcon = document.createElement('i')
 function addSettingsTab(){
-    var div = document.getElementsByClassName('component-button-link left')[0]
-
-    var extSettings =  document.createElement('a')
-    var schedule = document.getElementsByClassName('screen-button')[0]
-    var submitButton = document.getElementsByClassName('screen-button')[1]
-
-    var extIcon = document.createElement('i')
+    
     extIcon.setAttribute('class','chrome-extension nc-icon-glyph ui-1_settings-gear-64')
     extIcon.setAttribute('style','margin-right: 5px; vertical-align: middle;')
     
@@ -227,16 +270,25 @@ function addSettingsTab(){
 
     
 }
-
+const hex2rgb = (hex) => {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    
+    // return {r, g, b} 
+    return { r, g, b };
+}
 function showModal(){
-    var topButton = document.getElementsByClassName('vx-nav-center__portal')[0]
-    var secondTopButton = document.getElementsByClassName('vx-nav-center__portals-button vx-tooltipped vx-tooltipped--s')[0]
-    var header = document.getElementsByClassName('vx-nav')[0]
-    var dropdownContent = document.createElement('div')
-    var bg = document.querySelector('body')
-    dropdownContent.setAttribute('class','dropdown-content')
-    var text = document.createElement('h1')
-    var extSettings = document.getElementsByClassName('chrome-extension nc-icon-glyph ui-1_settings-gear-64')[0]
+    
+    var leftTriangle = document.getElementsByClassName('chrome-extension big-button left-triangle')[0]
+    var rightTriangle = document.getElementsByClassName('chrome-extension big-button right-triangle')[0]
+    
+    var secondLeftTriangle = document.getElementsByClassName('chrome-extension small-button left-triangle')[0]
+    var secondRightTriangle = document.getElementsByClassName('chrome-extension small-button right-triangle')[0]
+   
+    var assignmentPlannerIcon = document.getElementsByClassName("icon-block")[1]
+    var classesAndReportsIcon = document.getElementsByClassName('icon-block')[2]
+    var myCalendarIcon = document.getElementsByClassName('icon-block')[3]
     text.innerHTML = 'Change header color: '
 
     var colors = document.createElement('input')
@@ -246,22 +298,37 @@ function showModal(){
     dropdownContent.appendChild(text)
     dropdownContent.appendChild(colors)
 
-    var leftTriangle = document.getElementsByClassName('chrome-extension big-button left-triangle')[0]
-    var rightTriangle = document.getElementsByClassName('chrome-extension big-button right-triangle')[0]
-
-    var secondLeftTriangle = document.getElementsByClassName('chrome-extension small-button left-triangle')[0]
-    var secondRightTriangle = document.getElementsByClassName('chrome-extension small-button right-triangle')[0]
     colors.addEventListener('input',(e)=>{
         console.log(localStorage.getItem('header-color'))
         if(localStorage.getItem('header-color') !== null){
-            header.style.background = localStorage.getItem('header-color')
+            console.log(e.target.value)
+            
+            header.style.background = e.target.value
+            
             topButton.style.background = e.target.value
-            leftTriangle.style.borderBottom = `35px solid ${e.target.value}`
-            rightTriangle.style.borderBottom = `35px solid ${e.target.value}`
+            leftTriangle.style.borderBottom = `36px solid ${e.target.value}`
+            leftTriangle.style.borderLeft = `14px solid transparent`
+            leftTriangle.style.left = '-14px'
+            rightTriangle.style.borderBottom = `36px solid ${e.target.value}`
+            rightTriangle.style.borderRight = `14px solid transparent`
+            rightTriangle.style.right = '-14px'
             secondTopButton.style.background = e.target.value
             secondLeftTriangle.style.borderColor = `transparent ${e.target.value} transparent transparent`
+            
             secondRightTriangle.style.borderColor = `transparent transparent transparent ${e.target.value}`
             
+
+            assignmentPlannerIcon.style.color = e.target.value
+            let r = hex2rgb(e.target.value).r
+            let g = hex2rgb(e.target.value).g
+            let b = hex2rgb(e.target.value).b
+            
+            assignmentPlannerIcon.style.backgroundColor = `rgba(${r},${g},${b},0.2)`
+            classesAndReportsIcon.style.color = e.target.value
+            classesAndReportsIcon.style.backgroundColor = `rgba(${r},${g},${b},0.2)`
+            myCalendarIcon.style.color = e.target.value
+            myCalendarIcon.style.backgroundColor = `rgba(${r},${g},${b},0.2)`
+            //secondRightTriangle.style.borderBottom = `36px solid ${e.target.value}`
         }
         localStorage.setItem('header-color',e.target.value)
     })
@@ -280,6 +347,7 @@ function showModal(){
     
     window.addEventListener('click',(e)=>{
         if(e.target == bg){
+            colors.remove()
             dropdownContent.remove()
             notPressed = true
         }
