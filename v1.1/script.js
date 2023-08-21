@@ -1,9 +1,10 @@
 var notPressed = true
+
 setTimeout(()=>{
     
     var div = document.getElementsByClassName('component-heading')[1]
     var url = window.location.href
-    
+    console.log(document.getElementsByClassName('icon-block'))
     
     if(localStorage.getItem('header-color') !== null){
         var header = document.getElementsByClassName('vx-nav')[0]
@@ -15,11 +16,18 @@ setTimeout(()=>{
         var assignmentPlannerIcon = document.getElementsByClassName("icon-block")[1]
         var classesAndReportsIcon = document.getElementsByClassName('icon-block')[2]
         var myCalendarIcon = document.getElementsByClassName('icon-block')[3]
+        var schoolCalendarIcon = document.getElementsByClassName('icon-block')[4]
+        var studentDirectoryIcon = document.getElementsByClassName('icon-block')[5]
+        var facultyDirectoryIcon = document.getElementsByClassName('icon-block')[6]
 
         topButton.style.background = color
         secondTopButton.style.background = color
         header.style.background = color
         assignmentPlannerIcon.style.color = color
+        schoolCalendarIcon.style.color = color
+        studentDirectoryIcon.style.color = color
+        facultyDirectoryIcon.style.color = color
+
         let r = hex2rgb(color).r
         let g = hex2rgb(color).g
         let b = hex2rgb(color).b
@@ -29,7 +37,9 @@ setTimeout(()=>{
         classesAndReportsIcon.style.backgroundColor = `rgba(${r},${g},${b},0.2)`
         myCalendarIcon.style.color = color
         myCalendarIcon.style.backgroundColor = `rgba(${r},${g},${b},0.2)`
-
+        schoolCalendarIcon.style.backgroundColor = `rgba(${r},${g},${b},0.2)`
+        studentDirectoryIcon.style.backgroundColor = `rgba(${r},${g},${b},0.2)`
+        facultyDirectoryIcon.style.backgroundColor = `rgba(${r},${g},${b},0.2)`
         var leftTriangle = document.createElement('a')
         leftTriangle.setAttribute('class','chrome-extension big-button left-triangle')
         leftTriangle.setAttribute('style',`line-height: 35px; color: ${color}; border-bottom: 35px solid ${color};border-left: 10px solid transparent;content: ""; left: -10px;position: absolute;top: 0;`)
@@ -55,6 +65,13 @@ setTimeout(()=>{
         var leftTriangle = document.getElementsByClassName('chrome-extension big-button left-triangle')[0]
         var rightTriangle = document.getElementsByClassName('chrome-extension big-button right-triangle')[0]
 
+        leftTriangle.style.borderBottom = `36px solid ${color}`
+        leftTriangle.style.borderLeft = `14px solid transparent`
+        leftTriangle.style.left = '-14px'
+        rightTriangle.style.borderBottom = `36px solid ${color}`
+        rightTriangle.style.borderRight = `14px solid transparent`
+        rightTriangle.style.right = '-14px'
+
         var secondLeftTriangle = document.getElementsByClassName('chrome-extension small-button left-triangle')[0]
         var secondRightTriangle = document.getElementsByClassName('chrome-extension small-button right-triangle')[0]
         secondLeftTriangle.style.left = "-10px"
@@ -74,19 +91,33 @@ setTimeout(()=>{
         var dataDiv = document.createElement('div')
         dataDiv.setAttribute('id','data-div')
         var total = 0
-        
-        var finalWithAdvisory = 0
+
         var final = 0
         let gradeList = []
     
-        var grade_values = document.querySelectorAll('.numeric-grade')
-        var grade_arr = Array.from(grade_values)
+        //var grade_values = document.querySelectorAll('.numeric-grade')
+        var classes = document.getElementsByClassName('course')
+        var classes_arr = Array.from(classes)
+        console.log(classes)
+        //classes_arr.shift()
+        //classes_arr.shift()
+        //classes.shift
+        console.log(classes_arr)
         
-        for(grade of grade_arr){
-            gradeList.push(grade.innerHTML)
+        for(c of classes_arr){
+            if(c.children[0].children[1].children[0].innerHTML.split('<span class="numeric-grade">')[1]){
+                let grade = c.children[0].children[1].children[0].innerHTML.split('<span class="numeric-grade">')[1].split("%</span>")[0]
+                console.log(grade)
+            }
+            
         }
-    
-        for(grade of gradeList){
+        //var grade_arr = Array.from(grade_values)
+        
+        //for(grade of grade_arr){
+        //    gradeList.push(grade.innerHTML)
+        //}
+        //console.log(gradeList)
+        /*for(grade of gradeList){
             total += parseFloat(grade)
         }
         
@@ -98,7 +129,7 @@ setTimeout(()=>{
         else{
             finalWithAdvisory = Math.round(total / (gradeList.length - 1) * 100) / 100
             final = Math.round(total / (gradeList.length - 2) * 100) / 100
-        }
+        }*/
         
         
 
@@ -173,8 +204,16 @@ setTimeout(()=>{
     }
     
 
-    
 },300)
+function getGrade(){
+    var classes = document.getElementsByClassName('course')
+        var classes_arr = Array.from(classes)
+        for(c of classes_arr){
+            let grade = c.children[0].children[1].children[0].innerHTML.split('<span class="numeric-grade">')[1].split("%</span>")[0]
+            console.log(grade)
+        }
+}
+    
 function getLetterGrade(num){
     var letterGrade = ''
     if(num >= 93){
@@ -239,6 +278,8 @@ var schedule = document.getElementsByClassName('screen-button')[0]
 var submitButton = document.getElementsByClassName('screen-button')[1]
 
 var extIcon = document.createElement('i')
+
+
 function addSettingsTab(){
     
     extIcon.setAttribute('class','chrome-extension nc-icon-glyph ui-1_settings-gear-64')
@@ -280,6 +321,27 @@ const hex2rgb = (hex) => {
 }
 function showModal(){
     
+    var classes_arr = []
+    var classes = document.getElementsByClassName('course')
+    classes_arr = Array.from(classes)
+    
+    console.log(classes_arr)
+    var classes_included_container = document.createElement('div')
+    classes_included_container.style.textAlign = 'left'
+    for(clas of classes_arr){
+        var classes_included = document.createElement('h1')
+        classes_included.style.color = "#000000"
+        classes_included.style.fontSize = "20px"
+        console.log(clas.children[0].children[0].children[0].children[0].innerHTML)
+        classes_included.innerHTML = `${clas.children[0].children[0].children[0].children[0].innerHTML}`
+        classes_included_container.append(classes_included)
+    }
+    dropdownContent.appendChild(classes_included_container)
+
+
+
+
+
     var leftTriangle = document.getElementsByClassName('chrome-extension big-button left-triangle')[0]
     var rightTriangle = document.getElementsByClassName('chrome-extension big-button right-triangle')[0]
     
@@ -289,6 +351,9 @@ function showModal(){
     var assignmentPlannerIcon = document.getElementsByClassName("icon-block")[1]
     var classesAndReportsIcon = document.getElementsByClassName('icon-block')[2]
     var myCalendarIcon = document.getElementsByClassName('icon-block')[3]
+    var schoolCalendarIcon = document.getElementsByClassName('icon-block')[4]
+    var studentDirectoryIcon = document.getElementsByClassName('icon-block')[5]
+    var facultyDirectoryIcon = document.getElementsByClassName('icon-block')[6]
     text.innerHTML = 'Change header color: '
 
     var colors = document.createElement('input')
@@ -328,6 +393,13 @@ function showModal(){
             classesAndReportsIcon.style.backgroundColor = `rgba(${r},${g},${b},0.2)`
             myCalendarIcon.style.color = e.target.value
             myCalendarIcon.style.backgroundColor = `rgba(${r},${g},${b},0.2)`
+
+            schoolCalendarIcon.style.color = e.target.value
+            studentDirectoryIcon.style.color = e.target.value
+            facultyDirectoryIcon.style.color = e.target.value
+            schoolCalendarIcon.style.backgroundColor = `rgba(${r},${g},${b},0.2)`
+            studentDirectoryIcon.style.backgroundColor = `rgba(${r},${g},${b},0.2)`
+            facultyDirectoryIcon.style.backgroundColor = `rgba(${r},${g},${b},0.2)`
             //secondRightTriangle.style.borderBottom = `36px solid ${e.target.value}`
         }
         localStorage.setItem('header-color',e.target.value)
@@ -349,6 +421,7 @@ function showModal(){
         if(e.target == bg){
             colors.remove()
             dropdownContent.remove()
+            classes_included_container.remove()
             notPressed = true
         }
     })
